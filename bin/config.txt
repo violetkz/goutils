@@ -1,3 +1,3 @@
-username: zhoukaiz@cn.ibm.com
+username: zhoukaiz@a.com
 psw: 123456
 logfile: ./log.txt
