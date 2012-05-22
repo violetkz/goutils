@@ -1,3 +1,0 @@
-username: zhoukaiz@cn.ibm.com
-psw: 123456
-logfile: ./log.txt
