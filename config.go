@@ -1,8 +1,8 @@
-package main
+package config
 
 import (
 	"bufio"
-	"fmt"
+//	"fmt"
 	"os"
 	"regexp"
 )
@@ -52,16 +52,3 @@ func (cf *ConfigFile) Get(key string) string {
 	return cf.m[key]
 }
 
-func main() {
-
-	config, err := Config("config.txt", ":")
-	if err != nil {
-		fmt.Printf("%s\n", err)
-	}
-
-	c, err := config.Parse()
-	if err == nil {
-		fmt.Printf("==: %s\n", c["logfile"])
-		fmt.Printf("==: %s\n", c["logfiles"])
-	}
-}
