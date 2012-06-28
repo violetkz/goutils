@@ -1,3 +1,4 @@
-username: zhoukaiz@a.com
-psw: 123456
-logfile: ./log.txt
+logfile:xxxx
+host:http://9.125.90.211
+user:zhoukaiz@cn.ibm.com
+passwd:Violetkz928
