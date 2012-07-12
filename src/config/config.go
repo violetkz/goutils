@@ -4,27 +4,28 @@ import (
 	"bufio"
 	"os"
 	"regexp"
+    "fmt"
 )
 
 type ConfigFile struct {
 	filename  string
 	separator string
-	file      *os.File
 	m         map[string]string
 }
 
 func Config(filename string, separator string) (cf *ConfigFile, err error) {
-	f, err := os.Open(filename)
+	return &ConfigFile{filename, separator, make(map[string]string)}, nil
+}
+
+func (cf *ConfigFile) Parse() (* map[string]string, error) {
+	f, err := os.Open(cf.filename)
 	if err != nil {
 		return nil, err
 	}
 
-	return &ConfigFile{filename, separator, f, make(map[string]string)}, nil
-}
+    defer f.Close()
 
-func (cf *ConfigFile) Parse() (map[string]string, error) {
-
-	reader := bufio.NewReader(cf.file)
+	reader := bufio.NewReader(f)
 	restr := "^\\s*([a-zA-Z_][0-9a-zA-Z_]*)\\s*" + cf.separator + "\\s*([^\\s]+)\\s*$"
 	re, err := regexp.Compile(restr)
 	if err != nil {
@@ -45,9 +46,28 @@ func (cf *ConfigFile) Parse() (map[string]string, error) {
 			break
 		}
 	}
-	return cf.m, err
+	return &cf.m, err
 }
 
 func (cf *ConfigFile) Get(key string) string {
 	return cf.m[key]
+}
+
+func (cf*ConfigFile) Set(key string, val string) {
+   cf.m[key] = val; 
+}
+
+func (cf *ConfigFile) Save() {
+    f, err := os.OpenFile(cf.filename, os.O_WRONLY, 0600);
+    if (err != nil) {
+        panic(err);
+    }
+    defer f.Close()
+    for k,v := range cf.m {
+        s := fmt.Sprintf("%s"+cf.separator+ "%s\n", k, v);
+        f.WriteString(s)
+    }
+}
+
+func (cf *ConfigFile) Close() {
 }
